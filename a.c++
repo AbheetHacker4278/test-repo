@@ -7,3 +7,6 @@ int main(){
 		cout << i * 2 << " ";
 	}
 }
+
+//this edit is done by the newuser 
+cout << "Heloo Purana user" << endl;

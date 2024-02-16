@@ -92,18 +92,40 @@ app.get("/route-handler" , (req , res)=>{
 // })
 
 
-app.get('/calc' , (req , res)=>{
-  let ans = 0;
-  for(let i = 0 ; i < parseInt(req.query.request) ; i++){
-    ans = ans + i;
-  }
-  res.json({
-    response:ans.toString()
-  })
-  console.log(req.query);
-})
+// app.get('/calc' , (req , res)=>{
+//   let ans = 0;
+//   for(let i = 0 ; i < parseInt(req.query.request) ; i++){
+//     ans = ans + i;
+//   }
+//   res.json({
+//     response:ans.toString()
+//   })
+//   console.log(req.query);
+// })
 
 
+// app.post('/calc/:file' , (req , res)=>{
+//   let fl = req.params.file;
+//   fs.readFile(fl , "utf-8" , (err , data)=>{
+//     res.send({
+//       data
+//     })
+//   })
+//   console.log(res.body);
+// })
+
+
+
+
+// app.post('/user/' , (req , res)=>{
+//   let fl = req.body.pass;
+//   if(fl == "4278"){
+//     res.send("heloo user");
+//   }
+//   else{
+//     res.send("bhagg jaa");
+//   }
+// })
 
 
 
@@ -127,19 +149,19 @@ app.get('/calc' , (req , res)=>{
 //   res.send(`Ye https ke ye port pe chall raha hai: ${port}`);
 // })
 
-// app.get('/', (req, res) => {
-//   res.json('Hello World! Abheet seth')
-// })
+app.get('/', (req, res) => {
+  res.json('Hello World! Abheet seth')
+})
 
-function isunhealth(){
-  let isunhealthykidney = false;
-  for(let i = 0 ; i < users[0].kidney.length ; i++){
-    if(users[0].kidney[i].healthy == false){
-      isunhealthykidney = true;
-    }
-  }
-  return isunhealthykidney;
-}
+// function isunhealth(){
+//   let isunhealthykidney = false;
+//   for(let i = 0 ; i < users[0].kidney.length ; i++){
+//     if(users[0].kidney[i].healthy == false){
+//       isunhealthykidney = true;
+//     }
+//   }
+//   return isunhealthykidney;
+// }
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })

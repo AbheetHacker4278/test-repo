@@ -17,3 +17,14 @@ while(i < 10){
 	i++;
 }
 
+if(i == 10){
+	cout << "while success" << endl;
+}
+else{
+	cout << "while Not success" << endl;
+}
+
+for(int i = 0 ; i < 10 ; i++){
+	cout << "Hell0 Woelr" << endl;
+}
+

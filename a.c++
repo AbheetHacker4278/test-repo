@@ -10,3 +10,10 @@ int main(){
 
 //this edit is done by the newuser 
 cout << "Heloo Purana user" << endl;
+
+int i = 0;
+while(i < 10){
+	cout << i << " ";
+	i++;
+}
+

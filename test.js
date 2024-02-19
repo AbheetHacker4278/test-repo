@@ -55,5 +55,49 @@
 // );
 
 
+const express = require('express');
+const app = express();
+const bodyParser = require('body-parser');
+
+app.use(bodyParser.json());
+
+function username(req, res, next) {
+    if (req.body.username === "abheet") {
+        next(); // Call next() to proceed to the next middleware
+    } else {
+        res.status(401).send({ error: 'Invalid username' });
+    }
+}
+
+function password(req, res, next) {
+    if (req.body.password === 4278) {
+        next(); // Call next() to proceed to the next middleware
+    } else {
+        res.status(401).send({ error: 'Invalid password' });
+    }
+}
+
+function check(req, res, next) {
+    // This middleware function should only respond when both username and password are valid
+    res.send({ reply: "Logged in successfully" });
+}
+
+app.use(username , password , check);
+
+app.get('/', (req, res) => {
+    res.send({ reply: `${req.body.username} hello` });
+});
 
 
+//global catch handler middleware
+app.use((err , req , res , next)=>{
+    if(err){
+        res.status(404).send({
+            msg : "Someting went wrong"
+        })
+    }
+})
+
+app.listen(4001, () => {
+    console.log("app is listening on port 4001");
+});

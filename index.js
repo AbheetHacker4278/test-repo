@@ -128,6 +128,38 @@ app.get("/route-handler" , (req , res)=>{
 // })
 
 
+function usernamemiddleware(req , res , next){
+  if(req.body.username != "abheet"){
+    res.send("Wrong username Buddy.....");
+  }
+  else{
+    next();
+  }
+}
+function passwordmiddleware(req , res , next){
+  if(req.body.password != 4278){
+    res.send("Wrong Password Buddy.....");
+  }
+  else{
+    next();
+  }
+}
+
+let request = 0;
+function calculaterequest(req , res , next){
+  request++;
+  console.log(request);
+  next();
+}
+app.use(usernamemiddleware , passwordmiddleware , calculaterequest)
+
+app.get('/kidneylogin' , (req , res)=>{
+  res.send("LOgined")
+})
+
+
+
+
 
 
 

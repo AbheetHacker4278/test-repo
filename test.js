@@ -55,49 +55,73 @@
 // );
 
 
+// const express = require('express');
+// const app = express();
+// const bodyParser = require('body-parser');
+// const z = require('zod');
+// app.use(bodyParser.json());
+
+// function username(req, res, next) {
+//     if (req.body.username === "abheet") {
+//         next();
+//     } else {
+//         res.status(401).send({ error: 'Invalid username' });
+//     }
+// }
+
+// function password(req, res, next) {
+//     if (req.body.password === 4278) {
+//         next();
+//     } else {
+//         res.status(401).send({ error: 'Invalid password' });
+//     }
+// }
+
+// function check(req, res, next) {
+//     res.send({ reply: "Logged in successfully" });
+// }
+
+// app.use(username , password , check);
+
+// app.get('/', (req, res) => {
+//     res.send({ reply: `hello user` });
+// });
+
+
+// //global catch handler middleware
+// app.use((err , req , res , next)=>{
+//     if(err){
+//         res.status(404).send({
+//             msg : "Someting went wrong"
+//         })
+//     }
+// })
+
+// app.listen(4001, () => {
+//     console.log("app is listening on port 4001");
+// });
+
+
+
+
 const express = require('express');
 const app = express();
+const port = 4001
 const bodyParser = require('body-parser');
+const z = require('zod');
+const schema = z.array(z.number());
+app.use(express.json());
 
-app.use(bodyParser.json());
-
-function username(req, res, next) {
-    if (req.body.username === "abheet") {
-        next(); // Call next() to proceed to the next middleware
-    } else {
-        res.status(401).send({ error: 'Invalid username' });
-    }
-}
-
-function password(req, res, next) {
-    if (req.body.password === 4278) {
-        next(); // Call next() to proceed to the next middleware
-    } else {
-        res.status(401).send({ error: 'Invalid password' });
-    }
-}
-
-function check(req, res, next) {
-    // This middleware function should only respond when both username and password are valid
-    res.send({ reply: "Logged in successfully" });
-}
-
-app.use(username , password , check);
-
-app.get('/', (req, res) => {
-    res.send({ reply: `${req.body.username} hello` });
-});
-
-
-//global catch handler middleware
-app.use((err , req , res , next)=>{
-    if(err){
-        res.status(404).send({
-            msg : "Someting went wrong"
-        })
-    }
+app.get('/' , (req , res , next) => {
+    const val = res.body.num;
+    const response = schema.safeParse(val);
+    res.send({
+        response
+    })
 })
 
-app.listen(4001, () => {
-    console.log("app is listening on port 4001");
-});
+
+
+app.listen(port, () => {
+    console.log(`app is listening on port ${port}`);
+})

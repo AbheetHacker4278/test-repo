@@ -102,26 +102,66 @@
 // });
 
 
+// const express = require('express');
+// const app = express();
+// const port = 4001
+// const bodyParser = require('body-parser');
+// const zod = require('zod');
+// app.use(bodyParser.json());
+
+
+// const schema = zod.object({
+//     email : zod.string().email({message : "please enter a valid email"}),
+//     password : zod.string().max(6 , {message : "please enter a valid password"}),
+//     country: zod.literal("IN").or(zod.literal("US"))
+// })
+// app.get('/data' , (req , res , next) => {
+//     const val = req.body;
+//     const response = schema.safeParse(val);
+//     res.send({ 
+//         response: response
+//     })
+// })
+
+
+
+// app.listen(port, () => {
+//     console.log(`app is listening on port ${port}`);
+// })
+
+
+
 
 
 const express = require('express');
+const port = 5001;
 const app = express();
-const port = 4001
+const zod = require('zod');
 const bodyParser = require('body-parser');
-const z = require('zod');
-const schema = z.array(z.number());
-app.use(express.json());
+app.use(bodyParser.json());
 
-app.get('/' , (req , res , next) => {
-    const val = res.body.num;
-    const response = schema.safeParse(val);
+
+
+schema = zod.object({
+    email : zod.string().email({message : "please enter your email correctly"}),
+    password : zod.string(),
+    country : zod.literal('IN').or(zod.literal('US'))
+})
+app.get('/route' , (req , res , next)=>{
+    const usr = req.body;
+    const response = schema.safeParse(usr)
     res.send({
         response
     })
+    next()
 })
 
+app.use((err , req , res , next)=>{
+    res.send({
+        reply : "something went wrong"
+    })
+})
 
-
-app.listen(port, () => {
+app.listen(port , ()=>{
     console.log(`app is listening on port ${port}`);
 })

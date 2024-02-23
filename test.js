@@ -133,35 +133,39 @@
 
 
 
-const express = require('express');
-const port = 5001;
-const app = express();
-const zod = require('zod');
-const bodyParser = require('body-parser');
-app.use(bodyParser.json());
+// const express = require('express');
+// const port = 5001;
+// const app = express();
+// const zod = require('zod');
+// const bodyParser = require('body-parser');
+// app.use(bodyParser.json());
 
 
 
-schema = zod.object({
-    email : zod.string().email({message : "please enter your email correctly"}),
-    password : zod.string(),
-    country : zod.literal('IN').or(zod.literal('US'))
-})
-app.get('/route' , (req , res , next)=>{
-    const usr = req.body;
-    const response = schema.safeParse(usr)
-    res.send({
-        response
-    })
-    next()
-})
+// schema = zod.object({
+//     email : zod.string().email({message : "please enter your email correctly"}),
+//     password : zod.string(),
+//     country : zod.literal('IN').or(zod.literal('US'))
+// })
+// app.get('/route' , (req , res , next)=>{
+//     const usr = req.body;
+//     const response = schema.safeParse(usr)
+//     res.send({
+//         response
+//     })
+//     next()
+// })
 
-app.use((err , req , res , next)=>{
-    res.send({
-        reply : "something went wrong"
-    })
-})
+// app.use((err , req , res , next)=>{
+//     res.send({
+//         reply : "something went wrong"
+//     })
+// })
 
-app.listen(port , ()=>{
-    console.log(`app is listening on port ${port}`);
-})
+// app.listen(port , ()=>{
+//     console.log(`app is listening on port ${port}`);
+// })
+
+
+
+

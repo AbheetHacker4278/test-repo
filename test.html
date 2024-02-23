@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        async function fn(){
+        let getdata = await fetch('https://fakestoreapi.com/products/1');
+        let response = await getdata.json();
+        console.log(response);
+        }
+    </script>
+    <button onclick="fn()">click me</button>
+</body>
+</html>

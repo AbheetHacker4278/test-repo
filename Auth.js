@@ -79,38 +79,90 @@
 // user.save()
 
 
+// const express = require('express');
+// const app = express();
+// const bodyparser = require('body-parser')
+// app.use(bodyparser.json());
+
+// const mongoose = require('mongoose');
+// mongoose.connect('mongodb+srv://aseth9588:9824491931abheetseth@cluster0.bhtnmrh.mongodb.net/users');
+
+
+
+// const schema = mongoose.model('users' , {username : String,password : String,name : String})
+
+
+// app.post('/signup', async (req, res) => {
+//     const exist = await schema.findOne({ username: req.body.username });
+//     if (exist) {
+//         res.send({
+//             reply: "User already exists"
+//         });
+//     } else {
+//         const user = new schema({
+//             username: req.body.username,
+//             password: req.body.password,
+//             name: req.body.name
+//         });
+//         await user.save();
+//         res.send({
+//             reply: "Successfully saved",
+//         });
+//     }
+// });
+
+// app.listen(3000 , ()=>{
+//     console.log(`Http on port ${3000}`);
+// })
+
+
 const express = require('express');
 const app = express();
-const bodyparser = require('body-parser')
-app.use(bodyparser.json());
-
+const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+app.use(bodyParser.json());
+
 mongoose.connect('mongodb+srv://aseth9588:9824491931abheetseth@cluster0.bhtnmrh.mongodb.net/users');
-
-
-
-const schema = mongoose.model('users' , {username : String,password : String,name : String})
-
-
-app.post('/signup', async (req, res) => {
-    const exist = await schema.findOne({ username: req.body.username });
-    if (exist) {
-        res.send({
-            reply: "User already exists"
-        });
-    } else {
-        const user = new schema({
-            username: req.body.username,
-            password: req.body.password,
-            name: req.body.name
-        });
-        await user.save();
-        res.send({
-            reply: "Successfully saved"
-        });
+const schema = mongoose.model('users' , {username : String , password : String , name : String })
+app.post('/signup' , async (req ,res)=>{
+    try{
+        let exist = await schema.findOne({username : req.body.username});
+        if(exist){
+            res.status(404).send({
+                ServerReply : "Already Exist"
+            })
+        }
+        else if(!req.body.username || !req.body.password|| !req.body.name){
+            res.send({
+                ServerReply : "Invalid Format"
+            })
+        }
+        else{
+            const user = new schema({
+                username : req.body.username,
+                password : req.body.password,
+                name : req.body.name
+            })
+            user.save();
+            res.status(200).send({
+                ServerReply : "User Added successfully"
+            })
+        }
+    }catch{
+        res.json({
+            ServerReply : "Internal Server Error"
+        })
     }
-});
+})
+app.use((err , req , res , next)=>{
+    res.send({
+        ServerReply : "PLease Add correct Credentials"
+    })
+})
+
 
 app.listen(3000 , ()=>{
-    console.log(`Http on port ${3000}`);
+    console.log("app is listening on port 3000");
 })
+
+

@@ -122,7 +122,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 app.use(bodyParser.json());
 
-mongoose.connect('mongodb+srv://aseth9588:9824491931abheetseth@cluster0.bhtnmrh.mongodb.net/users');
+mongoose.connect('mongodb+srv://aseth9588:@cluster0.bhtnmrh.mongodb.net/users');
 const schema = mongoose.model('users' , {username : String , password : String , name : String })
 app.post('/signup' , async (req ,res)=>{
     try{

@@ -116,53 +116,112 @@
 // })
 
 
+// const express = require('express');
+// const app = express();
+// const bodyParser = require('body-parser');
+// const mongoose = require('mongoose');
+// app.use(bodyParser.json());
+
+// mongoose.connect('mongodb+srv://aseth9588:9824491931abheetseth@cluster0.bhtnmrh.mongodb.net/users');
+// const schema = mongoose.model('users' , {username : String , password : String , name : String })
+// app.post('/signup' , async (req ,res)=>{
+//     try{
+//         let exist = await schema.findOne({username : req.body.username});
+//         if(exist){
+//             res.status(404).send({
+//                 ServerReply : "Already Exist"
+//             })
+//         }
+//         else if(!req.body.username || !req.body.password|| !req.body.name){
+//             res.send({
+//                 ServerReply : "Invalid Format"
+//             })
+//         }
+//         else{
+//             const user = new schema({
+//                 username : req.body.username,
+//                 password : req.body.password,
+//                 name : req.body.name
+//             })
+//             user.save();
+//             res.status(200).send({
+//                 ServerReply : "User Added successfully"
+//             })
+//         }
+//     }catch{
+//         res.json({
+//             ServerReply : "Internal Server Error"
+//         })
+//     }
+// })
+// app.use((err , req , res , next)=>{
+//     res.send({
+//         ServerReply : "PLease Add correct Credentials"
+//     })
+// })
+
+
+// app.listen(3000 , ()=>{
+//     console.log("app is listening on port 3000");
+// })
+
+
+
+
+
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const zod = require('zod');
+const port = 3000;
+
+mongoose.connect('mongodb+srv://aseth9588:9824491931abheetseth@cluster0.bhtnmrh.mongodb.net/users');
+
 app.use(bodyParser.json());
 
-mongoose.connect('mongodb+srv://aseth9588:@cluster0.bhtnmrh.mongodb.net/users');
-const schema = mongoose.model('users' , {username : String , password : String , name : String })
-app.post('/signup' , async (req ,res)=>{
-    try{
-        let exist = await schema.findOne({username : req.body.username});
-        if(exist){
-            res.status(404).send({
-                ServerReply : "Already Exist"
-            })
+const schema = zod.object({
+    username: zod.string(),
+    email: zod.string().email({ message: "Enter your correct email address" }),
+});
+
+const schema2 = mongoose.model('User', { username: String, email: String });
+
+app.post('/users', async (req, res , next) => {
+    const verify = schema.safeParse(req.body);
+    if (verify.success) {
+        const existingUser = await schema2.find({ username: req.body.username });
+        if (existingUser.length > 0) {
+            return res.send({
+                Server: "User already registered"
+            });
+        } else {
+            const user = new schema2({
+                username: req.body.username,
+                email: req.body.email
+            });
+            await user.save();
+            return res.send({
+                ServerReply: "User successfully registered"
+            });
         }
-        else if(!req.body.username || !req.body.password|| !req.body.name){
-            res.send({
-                ServerReply : "Invalid Format"
-            })
-        }
-        else{
-            const user = new schema({
-                username : req.body.username,
-                password : req.body.password,
-                name : req.body.name
-            })
-            user.save();
-            res.status(200).send({
-                ServerReply : "User Added successfully"
-            })
-        }
-    }catch{
-        res.json({
-            ServerReply : "Internal Server Error"
-        })
+    } else {
+        res.status(404).send({
+            ServerReply: "Invalid data format",
+        });
     }
-})
+    next();
+});
+
 app.use((err , req , res , next)=>{
-    res.send({
-        ServerReply : "PLease Add correct Credentials"
+    res.status(404).send({
+        ServerReply : "Invalid data format",
     })
 })
+app.listen(port, () => {
+    console.log(`App is listening on port ${port}`);
+});
 
 
-app.listen(3000 , ()=>{
-    console.log("app is listening on port 3000");
-})
 
 

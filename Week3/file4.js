@@ -18,13 +18,13 @@ function authenticate(username, password) {
 function candecode(jwttoken) {
     const decoded = jwt.decode(jwttoken, jwtpass);
     if (decoded) {
-        console.log("Decoded:");
+        console.log("Decoded");
     } else {
         console.log("Decoding failed");
     }
 }
 function canverify(jwttoken) {
-    jwt.verify(jwttoken, jwtpass, (err, decoded) => {
+    jwt.verify(jwttoken, jwtpass, (err) => {
         if (err) {
             console.log("Verification failed:",);
         } else {

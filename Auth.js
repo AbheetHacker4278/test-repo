@@ -292,3 +292,31 @@
 // // app.listen(port, () => {
 // //     console.log(`app is listening on port ${port}`);
 // // });
+
+
+const express = require('express');
+const app = express();
+const fs = require('fs');
+const path = require('path');
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
+const dir = path.join('files/fil')
+
+app.get('/users' , (req , res)=>{
+    fs.readdir(dir , (err , data)=>{
+        res.send(data);
+    })
+})
+app.post('/users' , (req , res)=>{
+    const file = path.join(dir, req.body.filename);
+    fs.readFile(file , "utf-8" , (err , data)=>{
+        res.send(data);
+    })
+})
+app.put('/users' , (req , res)=>{
+    const file = path.join(dir, req.body.filename);
+    fs.writeFile(file , req.body.data , (err , data)=>{
+        res.send("Edited");
+    })
+})
+app.listen(3000)

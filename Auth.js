@@ -294,30 +294,81 @@
 // // });
 
 
+// const express = require('express');
+// const app = express();
+// const fs = require('fs');
+// const path = require('path');
+// const bodyParser = require('body-parser');
+// app.use(bodyParser.json());
+// const dir = path.join('files/fil')
+
+// app.get('/users' , (req , res)=>{
+//     fs.readdir(dir , (err , data)=>{
+//         res.send(data);
+//     })
+// })
+// app.post('/users' , (req , res)=>{
+//     const file = path.join(dir, req.body.filename);
+//     fs.readFile(file , "utf-8" , (err , data)=>{
+//         res.send(data);
+//     })
+// })
+// app.put('/users' , (req , res)=>{
+//     const file = path.join(!
+//         dir, req.body.filename);
+//     fs.writeFile(file , req.body.data , (err , data)=>{
+//         res.send("Edited");
+//     })
+// })
+// app.listen(3000)
+
+
 const express = require('express');
 const app = express();
-const fs = require('fs');
-const path = require('path');
+const port = 3000;
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
-const dir = path.join('files/fil')
+const mongoose = require('mongoose');
+mongoose.connect('mongodb+srv://aseth9588:9824491931abheetseth@cluster0.bhtnmrh.mongodb.net/users')
+const schema = mongoose.model('users' , {username : String , password : String , email : String , courses : []})
+app.post('/users' , async (req , res)=>{
+    let exist = await schema.findOne({username : req.body.username});
+    if(exist){
+        res.send({
+            User : "User Already THere"
+        })
+    }
+    else{
+        const user = new schema({
+            username : req.body.username,
+            password : req.body.password,
+            email : req.body.email,
+            courses : req.body.courses
+        })
+        user.save();
+        res.send({
+            Reply : "Userregistered successfully"
+        })
+    }
+})
+app.listen(port , () => {
+    console.log(`Server is Listining on Port ${port}`);
+})
 
-app.get('/users' , (req , res)=>{
-    fs.readdir(dir , (err , data)=>{
-        res.send(data);
-    })
-})
-app.post('/users' , (req , res)=>{
-    const file = path.join(dir, req.body.filename);
-    fs.readFile(file , "utf-8" , (err , data)=>{
-        res.send(data);
-    })
-})
-app.put('/users' , (req , res)=>{
-    const file = path.join(!
-        dir, req.body.filename);
-    fs.writeFile(file , req.body.data , (err , data)=>{
-        res.send("Edited");
-    })
-})
-app.listen(3000)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
